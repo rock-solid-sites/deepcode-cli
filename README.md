@@ -2,8 +2,8 @@
 
 > **⚠️ Archived.** This fork was an experiment that has concluded.
 > Substantive contributions are being offered upstream:
-> - [PR: systemPromptFile config key](https://github.com/lessweb/deepcode-cli/pull/N)
-> - [PR: English translations of docs](https://github.com/lessweb/deepcode-cli/pull/N)
+> - [PR #57: systemPromptFile config key](https://github.com/lessweb/deepcode-cli/pull/57)
+> - [PR #56: English translations of docs](https://github.com/lessweb/deepcode-cli/pull/56)
 >
 > See upstream at https://github.com/lessweb/deepcode-cli
 
