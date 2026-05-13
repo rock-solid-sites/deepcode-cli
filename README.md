@@ -1,33 +1,38 @@
-# Deep Code CLI
+# deepcode-modes
 
-[Deep Code](https://github.com/lessweb/deepcode-cli) 是专为 `deepseek-v4` 模型优化的终端 AI 编码助手，支持深度思考、推理强度控制以及 Agent Skills。
+A fork of [Deep Code CLI](https://github.com/lessweb/deepcode-cli) that adds
+system-prompt replacement and a behavioral tuning layer modeled on
+[claude-code-modes](https://github.com/nklisch/claude-code-modes).
 
-## 🚀 新增功能（本 Fork）
+Deep Code is a terminal AI coding assistant optimized for the `deepseek-v4`
+model family, with support for deep thinking, reasoning effort control, and
+Agent Skills. This fork preserves all of those capabilities and adds the
+ability to replace the system prompt — letting you control how Deep Code
+behaves on a per-task basis the way Claude Code Modes does for Claude Code.
 
-### `/mcp` Skill 与 MCP 实现
+## Status
 
-本 Fork 新增了 `/mcp` 命令和 MCP（Model Context Protocol）集成，让 Deep Code CLI 能够连接外部工具和服务：
+Work in progress. The current code is the upstream Deep Code CLI baseline,
+with fork-specific features in active development. Today, this fork behaves
+identically to upstream Deep Code CLI, with the exception of MCP
+configuration documented in English.
 
-- **`/mcp` Skill**：一键管理 MCP 服务器连接，支持添加、移除、列出已配置的 MCP 服务。
-- **MCP 协议实现**：支持与 GitHub、文件系统、数据库等多种外部服务的标准化集成，大幅扩展 AI 助手的操作能力。
+## Installation
 
-通过 MCP，你现在可以让 Deep Code 直接操作 GitHub 仓库、读取文件、查询数据库等，而无需离开终端。
-
-📖 **详细配置指南：** [docs/mcp.md](docs/mcp.md)
-
-## 安装
-
-```bash
+```sh
 npm install -g @vegamo/deepcode-cli
 ```
 
-在任意项目目录下运行 `deepcode` 即可启动。
+(Installation will switch to the fork's own npm package once the new
+features are implemented and the package is published. For now, install
+upstream and treat this repo as the source-of-truth for ongoing fork
+work.)
 
-![intro2](resources/intro2.png)
+Run `deepcode` inside any project directory to start.
 
-## 配置
+## Configuration
 
-创建 `~/.deepcode/settings.json` 文件，内容如下：
+Create `~/.deepcode/settings.json`:
 
 ```json
 {
@@ -41,92 +46,153 @@ npm install -g @vegamo/deepcode-cli
 }
 ```
 
-配置文件与 [Deep Code VSCode 插件](https://github.com/lessweb/deepcode) 共享，无需重复配置。
+The configuration file is shared with the [Deep Code VSCode
+extension](https://github.com/lessweb/deepcode) — configure once, use
+everywhere.
 
-## 主要功能
+See [docs/configuration.md](docs/configuration.md) for the full
+configuration reference, and [docs/mcp.md](docs/mcp.md) for MCP server
+setup.
 
-### **Skills**
-Deep Code CLI 支持 agent skills，允许您扩展助手的能力：
+## Key Features
 
-- **User-level Skills**：从 `~/.agents/skills/` 目录中发现并激活 skills。
-- **Project-level Skills**：从 `./.agents/skills/` 目录中加载项目专属 skills，并兼容旧的 `./.deepcode/skills/` 目录。
+### Skills
 
-### **为 DeepSeek 优化**
-- 专门为 DeepSeek 模型性能调优。
-- 通过使用[上下文缓存](https://api-docs.deepseek.com/guides/kv_cache)来降低成本。
-- 原生支持[思考模式](https://api-docs.deepseek.com/guides/thinking_mode)和思考强度控制。
+Deep Code supports agent skills:
 
-## 快捷键
+- **User-level Skills**: discovered and activated from `~/.agents/skills/`.
+- **Project-level Skills**: loaded from `./.agents/skills/` for
+  project-specific workflows, with legacy `./.deepcode/skills/`
+  compatibility.
 
-| 键              | 操作                              |
-|-----------------|-----------------------------------|
-| `Enter`         | 发送消息                          |
-| `Shift+Enter`   | 插入换行（也可用 `Ctrl+J`）       |
-| `Ctrl+V`        | 从剪贴板粘贴图片                  |
-| `Esc`           | 中断当前模型回复                  |
-| `/`             | 打开 skills / 命令菜单            |
-| `/new`          | 开始新对话                        |
-| `/resume`       | 选择历史对话继续                  |
-| `/skills`       | 列出可用 skills                   |
-| `/exit`         | 退出                              |
-| 连续 `Ctrl+D`   | 退出                              |
+### MCP Support
 
-## 支持的模型
+Deep Code can connect to external services (GitHub, browsers, file systems,
+databases) via the Model Context Protocol. See
+[docs/mcp.md](docs/mcp.md) for setup details.
 
-- `deepseek-v4-pro`（推荐使用）
+### Optimized for DeepSeek
+
+- Specifically tuned for DeepSeek model performance.
+- Reduces costs by using
+  [Context Caching](https://api-docs.deepseek.com/guides/kv_cache).
+- Natively supports
+  [Thinking Mode](https://api-docs.deepseek.com/guides/thinking_mode)
+  and Thinking Effort Control.
+
+## What This Fork Adds
+
+These features are in active development. Status is tracked in this repo's
+commit history.
+
+### System-prompt replacement
+
+A mechanism for replacing Deep Code's base system prompt with operator-
+provided content. The base prompt is otherwise additive-only — `AGENTS.md`
+content and matched skills append after it. This fork makes the base
+prompt itself configurable.
+
+### Modes-style behavioral tuning
+
+A CLI wrapper that assembles system prompts from behavioral axis fragments
+(agency / quality / scope) and modifiers. This fork imports the axis
+fragments, modifiers, and presets from
+[claude-code-modes](https://github.com/nklisch/claude-code-modes)
+directly, adapting where Deep Code's tool surface differs from Claude
+Code's. Presets (`safe`, `create`, `extend`, `refactor`, `explore`,
+`none`) match claude-code-modes' set so the working vocabulary is the
+same across both tools.
+
+## Keyboard Shortcuts
+
+| Key | Action |
+|---|---|
+| `Enter` | Send the prompt |
+| `Shift+Enter` | Insert a newline (also `Ctrl+J`) |
+| `Ctrl+V` | Paste an image from the clipboard |
+| `Esc` | Interrupt the current model turn |
+| `/` | Open the skills / commands menu |
+| `/new` | Start a fresh conversation |
+| `/resume` | Choose a previous conversation to continue |
+| `/skills` | List available skills |
+| `/mcp` | Manage MCP server connections |
+| `/exit` | Quit Deep Code |
+| `Ctrl+D` twice | Quit Deep Code |
+
+## Supported Models
+
+- `deepseek-v4-pro` (recommended)
 - `deepseek-v4-flash`
-- 任何其他 OpenAI 兼容模型
+- Any other OpenAI-compatible model
 
+## Relationship to Upstream
 
-## 常见问题
+This fork tracks [lessweb/deepcode-cli](https://github.com/lessweb/deepcode-cli)
+for the core Deep Code CLI functionality. Upstream improvements are
+merged in periodically. Fork-specific work (system-prompt replacement,
+Modes-style behavioral tuning) lives only in this repo.
 
-### Deep Code 是否有 VSCode 插件？
+If you're looking for the canonical Deep Code CLI without the additions
+this fork is building, use upstream directly.
 
-有的。Deep Code 提供功能完整的 VSCode 插件，可在 [VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=vegamo.deepcode-vscode) 安装。插件与 CLI 共享 `~/.deepcode/settings.json` 配置文件，可以在终端和编辑器之间无缝切换。
+## FAQ
 
-### Deep Code 是否支持理解图片？
+### Does Deep Code have a VSCode extension?
 
-Deep Code 支持多模态，可使用ctrl+v从剪贴板粘贴图片。但目前 deepseek-v4 不支持多模态。有些模型虽然有多模态能力，但对多轮对话请求的限制太严。目前多模态输入推荐使用火山方舟的 Doubao-Seed-2.0-pro 模型，适配效果最好。
+Yes. Deep Code has a [VSCode
+extension](https://marketplace.visualstudio.com/items?itemName=vegamo.deepcode-vscode)
+that shares the `~/.deepcode/settings.json` configuration file with the
+CLI. This fork is not currently being developed to be compatible with
+the extension — the fork-specific features target the CLI only.
 
-### 怎样在任务完成后自动给 Slack 发消息？
+### Does Deep Code support understanding images?
 
-编写一个调用 Slack webhook 的 Shell 通知脚本，然后在 `~/.deepcode/settings.json` 中将 `notify` 字段设为该脚本的完整路径即可。详细步骤可参考：https://binfer.net/share/jby5xnc-so6g
+Deep Code supports multimodal input — you can paste images from the
+clipboard with `Ctrl+V`. However, `deepseek-v4` does not currently
+support multimodal. For multimodal input, the Volcano Ark
+`Doubao-Seed-2.0-pro` model is recommended.
 
-### 怎样启用联网搜索功能？
+### How do I send a Slack message when a task completes?
 
-Deep Code自带免费的、且大部分情况够用的Web Search工具。如果你希望使用自定义脚本进行联网搜索，可以在 `~/.deepcode/settings.json` 中将 `webSearchTool` 设为脚本的完整路径即可。详细步骤可参考：https://github.com/qorzj/web_search_cli
+Write a shell notification script that calls a Slack webhook, then set
+the `notify` field in `~/.deepcode/settings.json` to the full path of
+the script. See [docs/configuration.md](docs/configuration.md) for
+details.
 
-### 是否支持 Coding Plan？
+### How do I enable web search?
 
-支持。只要把 `~/.deepcode/settings.json` 的 `env.BASE_URL` 配置为 OpenAI 兼容的接口地址就行。以火山方舟的 Coding Plan 为例：
+Deep Code includes a built-in web search tool that works for most use
+cases. To use a custom script instead, set the `webSearchTool` field in
+`~/.deepcode/settings.json` to the full path of your script.
 
-```json
-{
-  "env": {
-    "MODEL": "ark-code-latest",
-    "BASE_URL": "https://ark.cn-beijing.volces.com/api/coding/v3",
-    "API_KEY": "**************"
-  },
-  "thinkingEnabled": true
-}
-```
+### Does it support coding plans (third-party model providers)?
 
-### 如何配置 MCP？
+Yes. Set `env.BASE_URL` in `~/.deepcode/settings.json` to any
+OpenAI-compatible API endpoint. See
+[docs/configuration.md](docs/configuration.md) for examples.
 
-Deep Code CLI 支持 MCP（Model Context Protocol），可以连接 GitHub、浏览器、文件系统等外部服务。配置方法请查看：[docs/mcp.md](docs/mcp.md)
+### How do I configure MCP?
 
-## 获取帮助
+See [docs/mcp.md](docs/mcp.md) for full MCP setup instructions.
 
-- 在 GitHub Issues 上报告错误或请求功能 (https://github.com/lessweb/deepcode-cli/issues)
+## Contributing
 
-## 协议
+Issues and pull requests welcome. For fork-specific features, please
+discuss in an issue before submitting a PR — the project has a specific
+direction and not all additions will fit it.
 
-- MIT
+For issues with the underlying Deep Code CLI (not fork-specific
+features), please file them with upstream:
+<https://github.com/lessweb/deepcode-cli/issues>
 
-## 支持我们
+## License
 
-如果你觉得这个工具对你有帮助，请考虑通过以下方式支持我们：
+MIT. See [LICENSE](LICENSE).
 
-- 在 GitHub 上给我们一个 Star (https://github.com/lessweb/deepcode-cli)
-- 向我们提交反馈和建议
-- 分享给你的朋友和同事
+## Acknowledgments
+
+- [Deep Code CLI](https://github.com/lessweb/deepcode-cli) by lessweb —
+  the upstream project this fork builds on.
+- [claude-code-modes](https://github.com/nklisch/claude-code-modes) by
+  nklisch — the behavioral tuning model this fork's planned features
+  draw from directly.
