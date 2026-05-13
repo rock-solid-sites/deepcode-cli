@@ -33,6 +33,7 @@ The following are all the top-level fields supported in `settings.json`, along w
 | `debugLogEnabled`  | boolean | Enable debug log output (default `false`)                                   |
 | `notify`           | string  | Full path to a task-completion notification script (e.g., Slack notification script) |
 | `webSearchTool`    | string  | Full path to a custom web search script                                     |
+| `systemPromptFile` | string  | Path to a file containing a replacement system prompt (see section below)   |
 | `mcpServers`       | object  | MCP server configurations (keys are service names, values are McpServerConfig objects) |
 
 #### `env` Sub-fields
@@ -84,6 +85,22 @@ Deep Code has a built-in, free-to-use Web Search tool. If you need custom search
 ```
 
 The script receives a search query as an argument and outputs results in JSON format for the AI.
+
+#### `systemPromptFile` — System Prompt Replacement
+
+By default, Deep Code uses its built-in system prompt. To replace it with custom content, set `systemPromptFile` to a file path:
+
+```json
+{
+  "systemPromptFile": "/path/to/my-system-prompt.md"
+}
+```
+
+The path is resolved relative to the project root (for project-level settings) or treated as an absolute path. Environment variable support is also available via `DEEPCODE_SYSTEM_PROMPT_FILE`.
+
+When set, the file content replaces the built-in base system prompt. Tool documentation, runtime context, AGENTS.md instructions, skills, and the drift-guard skill continue to load after the replacement — tool calling is preserved.
+
+If the file cannot be read (wrong path, permissions issue, deleted file), Deep Code exits with an error. It does **not** silently fall back to the default prompt.
 
 #### `mcpServers` — MCP Servers
 
