@@ -161,3 +161,19 @@ All remaining `src/` files are pure English in both code and comments. Full list
 2. `README_en.md` — update from synced `README_cn.md` or `README.md`
 3. `docs/mcp.md` — fresh English translation (referenced from both READMEs)
 4. `docs/configuration.md` — fresh English translation (referenced from both READMEs)
+
+---
+
+## Resolution — Session 2
+
+All translations placed, file structure finalized.
+
+| Inventory entry | Action taken | Commit |
+|---|---|---|
+| `docs/configuration.md` — fresh translation (Chinese → English) | Staging file `docs/en-configuration.md` copied over upstream Chinese original; staging file deleted. | `b0854ad` |
+| `docs/mcp.md` — fresh translation (Chinese → English) | Staging file `docs/en-mcp.md` copied over upstream Chinese original; staging file deleted. | `b0854ad` |
+| `README.md` (upstream Chinese) — create English counterpart | New English `README.md` authored by operator (staged as `docs/README-en.md`) moved to repo root, replacing upstream Chinese original. | `14b3c49` |
+| `README_cn.md` (upstream Chinese, stale) — sync with fork features | Fork-aware Chinese translation (staged as `docs/cn-readme.md`) moved to repo root as `README_cn.md`, replacing upstream stale copy. | `14b3c49` |
+| `README_en.md` — update or remove | Deleted. `README.md` is now the canonical English README, making the separate `README_en.md` convention redundant. | N/A — file was untracked, so deletion is not in git history. |
+| All `docs/tools/*.md`, `.deepcode/AGENTS.md`, `docs/prompts/init_command.md.ejs`, `.husky/pre-commit` | No action needed (already English). | — |
+| All 55 pure-English `src/` files | No action needed. | — |
