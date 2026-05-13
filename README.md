@@ -1,5 +1,12 @@
 # deepcode-modes
 
+> **⚠️ Archived.** This fork was an experiment that has concluded.
+> Substantive contributions are being offered upstream:
+> - [PR: systemPromptFile config key](https://github.com/lessweb/deepcode-cli/pull/N)
+> - [PR: English translations of docs](https://github.com/lessweb/deepcode-cli/pull/N)
+>
+> See upstream at https://github.com/lessweb/deepcode-cli
+
 A fork of [Deep Code CLI](https://github.com/lessweb/deepcode-cli) that adds
 system-prompt replacement and a behavioral tuning layer modeled on
 [claude-code-modes](https://github.com/nklisch/claude-code-modes).
@@ -12,10 +19,9 @@ behaves on a per-task basis the way Claude Code Modes does for Claude Code.
 
 ## Status
 
-Work in progress. The current code is the upstream Deep Code CLI baseline,
-with fork-specific features in active development. Today, this fork behaves
-identically to upstream Deep Code CLI, with the exception of MCP
-configuration documented in English.
+**Archived.** The fork's substantive work (systemPromptFile feature, English
+doc translations) is being offered upstream as separate pull requests. No
+further development is planned on this fork.
 
 ## Installation
 
@@ -80,28 +86,24 @@ databases) via the Model Context Protocol. See
   [Thinking Mode](https://api-docs.deepseek.com/guides/thinking_mode)
   and Thinking Effort Control.
 
-## What This Fork Adds
+## What This Fork Added
 
-These features are in active development. Status is tracked in this repo's
-commit history.
+These features were implemented during the fork's active development cycle
+and are now offered upstream:
 
 ### System-prompt replacement
 
 A mechanism for replacing Deep Code's base system prompt with operator-
-provided content. The base prompt is otherwise additive-only — `AGENTS.md`
-content and matched skills append after it. This fork makes the base
-prompt itself configurable.
+provided content via a `systemPromptFile` config key. The base prompt is
+otherwise additive-only — `AGENTS.md` content and matched skills append
+after it. This fork made the base prompt configurable via a file path.
 
-### Modes-style behavioral tuning
+### Modes-style behavioral tuning (planned, not implemented)
 
-A CLI wrapper that assembles system prompts from behavioral axis fragments
-(agency / quality / scope) and modifiers. This fork imports the axis
-fragments, modifiers, and presets from
-[claude-code-modes](https://github.com/nklisch/claude-code-modes)
-directly, adapting where Deep Code's tool surface differs from Claude
-Code's. Presets (`safe`, `create`, `extend`, `refactor`, `explore`,
-`none`) match claude-code-modes' set so the working vocabulary is the
-same across both tools.
+A CLI wrapper (`deepcode-mode`) that would assemble system prompts from
+behavioral axis fragments (agency / quality / scope) and modifiers,
+modeled on [claude-code-modes](https://github.com/nklisch/claude-code-modes).
+This feature was designed but not implemented before the fork concluded.
 
 ## Keyboard Shortcuts
 
@@ -127,13 +129,12 @@ same across both tools.
 
 ## Relationship to Upstream
 
-This fork tracks [lessweb/deepcode-cli](https://github.com/lessweb/deepcode-cli)
-for the core Deep Code CLI functionality. Upstream improvements are
-merged in periodically. Fork-specific work (system-prompt replacement,
-Modes-style behavioral tuning) lives only in this repo.
+This fork was based on [lessweb/deepcode-cli](https://github.com/lessweb/deepcode-cli)
+and tracked it for the core Deep Code CLI functionality. Fork-specific
+work (systemPromptFile config key, English doc translations) has been
+offered upstream as pull requests.
 
-If you're looking for the canonical Deep Code CLI without the additions
-this fork is building, use upstream directly.
+If you're looking for the canonical Deep Code CLI, use upstream directly.
 
 ## FAQ
 
@@ -177,13 +178,11 @@ See [docs/mcp.md](docs/mcp.md) for full MCP setup instructions.
 
 ## Contributing
 
-Issues and pull requests welcome. For fork-specific features, please
-discuss in an issue before submitting a PR — the project has a specific
-direction and not all additions will fit it.
+This fork is archived and no longer accepting contributions. The
+substantive work has been offered upstream.
 
-For issues with the underlying Deep Code CLI (not fork-specific
-features), please file them with upstream:
-<https://github.com/lessweb/deepcode-cli/issues>
+For issues with the underlying Deep Code CLI, please file them with
+upstream: <https://github.com/lessweb/deepcode-cli/issues>
 
 ## License
 
